@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, NotFoundException, InternalServerErrorException } from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { JwtAuthGuard } from 'src/usuario/jwt-auth.guard';
+import { Project } from './entities/project.entity';
 
 @Controller('api/project')
 export class ProjectController {
@@ -23,7 +24,20 @@ export class ProjectController {
   findByUserId(@Param('username') username: string) {
     return this.projectService.findByUserId(username);
   }
-
+  @Get(':username/:id')
+  async findByUsernameAndId(
+    @Param('username') username: string,
+    @Param('id') id: number,
+  ): Promise<Project> {
+    try {
+      return await this.projectService.findByUsernameAndId(username, id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw new InternalServerErrorException(error.message);
+    }
+  }
   @Patch(':id')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {

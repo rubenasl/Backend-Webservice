@@ -11,6 +11,7 @@ export class SectionController {
   constructor(private readonly sectionService: SectionService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   create(@Body() createSectionDto: CreateSectionDto) {
     return this.sectionService.create(createSectionDto);
   }
@@ -33,6 +34,11 @@ export class SectionController {
       }
       throw new InternalServerErrorException(error.message);
     }
+  }
+
+  @Get('user/:username')
+  findByUserId(@Param('username') username: string) {
+    return this.sectionService.findByUserId(username);
   }
 
   @Patch(':id')

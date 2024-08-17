@@ -26,6 +26,7 @@ export class Resume {
     city:string;
     @Column({nullable:true})
     subtitle:string;
+    
 
     @ManyToOne(() => Usuario, (user_id) => user_id.resumes, {eager: true,onDelete:'CASCADE', onUpdate:'CASCADE'})
     @JoinColumn({name: 'user_id'})

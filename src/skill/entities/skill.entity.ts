@@ -13,7 +13,7 @@ export class Skill {
     porcent:string;
     @Column({ nullable: true })
     icon: string;
-    @Column({nullable:true})
+    @Column({nullable:false})
     name:string;
     @ManyToMany(() => Project, (project) => project.skills)
     projects: Project[];

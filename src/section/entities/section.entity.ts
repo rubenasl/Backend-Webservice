@@ -4,11 +4,12 @@ import {Entity, Column, PrimaryGeneratedColumn, Unique, OneToMany, ManyToOne, Jo
 
 
 @Entity()
+@Unique(['title', 'user_id'])
 export class Section {
 
     @PrimaryGeneratedColumn()
     id:number;
-    @Column({nullable:false,unique:true})
+    @Column({nullable:false})
     title:string;
 
     @Column({nullable:false,type:'varchar'})

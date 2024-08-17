@@ -18,15 +18,19 @@ export class ProjectService {
 
   async findAll() {
     try {
-      const projects = await this.ProjectRep.find({ relations: ['user_id', 'skills','prosImgs'] });
-
-
-        return projects;
-
+      const projects = await this.ProjectRep.find({
+        relations: ['user_id', 'skills', 'prosImgs'],
+        order: {
+          id: 'ASC',  // Ordena por la fecha de creación en orden ascendente
+        },
+      });
+  
+      return projects;
     } catch (error) {
       throw new InternalServerErrorException('Error retrieving projects');
     }
   }
+  
 
   async findByUserId(username: string) {
     try {
@@ -44,7 +48,7 @@ export class ProjectService {
         },
         relations: ['user_id', 'prosImgs','skills'],
       });
-  
+   
       return skills.map(skill => plainToClass(Project, skill));
     } catch (error) {
       if (error instanceof NotFoundException) {
@@ -54,7 +58,38 @@ export class ProjectService {
     }
   }
 
+  async findByUsernameAndId(username: string, projectId: number): Promise<Project> {
+    try {
+      // Buscar el usuario por su username
+      const user = await this.UserRep.findOne({
+        where: { username },
+      });
 
+      if (!user) {
+        throw new NotFoundException(`User not found for username: ${username}`);
+      }
+
+      // Buscar el proyecto por id y user_id
+      const project = await this.ProjectRep.findOne({
+        where: {
+          id: projectId,
+          user_id: user,
+        },
+        relations: ['user_id', 'skills', 'prosImgs'],
+      });
+
+      if (!project) {
+        throw new NotFoundException(`Project not found with ID: ${projectId} for username: ${username}`);
+      }
+
+      return project;
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw error;
+      }
+      throw new InternalServerErrorException('Error retrieving project by username and ID');
+    }
+  }
 
   async create(createProjectDto: CreateProjectDto): Promise<Project> {
     const { skill_ids, user_id, dateProject, url, ...projectData } = createProjectDto;

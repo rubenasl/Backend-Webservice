@@ -17,12 +17,17 @@ export class SkillService {
 
   async findAll() {
     try {
-      const skills = await this.SkillRep.find({ relations: ['user_id'] });
-
+      const skills = await this.SkillRep.find({
+        relations: ['user_id'],
+        order: {
+          id: 'ASC',  // Ordena por la fecha de creación en orden ascendente (si existe el campo created_at)
+        },
+      });
+  
       return skills.map(skill => {
         const skillWithFilteredFields = {
           ...plainToClass(Skill, skill),
-          user_id: skill.user_id.id  // Include only the user_id
+          user_id: skill.user_id.id  // Incluye solo el user_id
         };
         return skillWithFilteredFields;
       });
@@ -30,6 +35,7 @@ export class SkillService {
       throw new InternalServerErrorException('Error retrieving skills');
     }
   }
+  
 
   async findByUserId(username: string) {
     try {
@@ -70,7 +76,10 @@ export class SkillService {
     const { porcent } = createSkillDto;
     try {
       const existingSkill = await this.SkillRep.findOne({
-        where: { name: createSkillDto.name }
+        where: {
+          name: createSkillDto.name,
+          user_id: createSkillDto.user_id
+        }
       });
   
       if (existingSkill) {

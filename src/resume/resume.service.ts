@@ -18,13 +18,18 @@ export class ResumeService {
 
   async findAll() {
     try {
-      const resumes = await this.ResumeRep.find({ relations: ['user_id', 'category_id'] });
-
+      const resumes = await this.ResumeRep.find({
+        relations: ['user_id', 'category_id'],
+        order: {
+          id: 'ASC',  // Ordena por la fecha de creación en orden ascendente
+        },
+      });
+  
       return resumes.map(resume => {
         const resumeWithFilteredFields = {
           ...plainToClass(Resume, resume),
-          user_id: resume.user_id.id,  // Include only the user_id
-          category_id: resume.category_id.id  // Include only the category_id
+          user_id: resume.user_id.id,  // Incluye solo el user_id
+          category_id: resume.category_id.id  // Incluye solo el category_id
         };
         return resumeWithFilteredFields;
       });
@@ -32,6 +37,7 @@ export class ResumeService {
       throw new InternalServerErrorException('Error retrieving resumes');
     }
   }
+  
 
   async findByUserId(username: string) {
     try {

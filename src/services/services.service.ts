@@ -16,12 +16,17 @@ export class ServicesService {
 
   async findAll() {
     try {
-      const services = await this.ServicesRep.find({ relations: ['user_id'] });
-
+      const services = await this.ServicesRep.find({
+        relations: ['user_id'],
+        order: {
+          id: 'ASC',  // Ordena por la fecha de creación en orden ascendente (si existe el campo created_at)
+        },
+      });
+  
       return services.map(service => {
         const serviceWithFilteredFields = {
           ...plainToClass(Services, service),
-          user_id: service.user_id.id  // Include only the user_id
+          user_id: service.user_id.id  // Incluye solo el user_id
         };
         return serviceWithFilteredFields;
       });
@@ -29,6 +34,7 @@ export class ServicesService {
       throw new InternalServerErrorException('Error retrieving services');
     }
   }
+  
 
   async findByUserId(username: string) {
     try {
@@ -64,6 +70,8 @@ export class ServicesService {
   
   
 
+
+  
   async create(createServiceDto: CreateServiceDto): Promise<Services> {
     try {
       const newService = this.ServicesRep.create(createServiceDto);
