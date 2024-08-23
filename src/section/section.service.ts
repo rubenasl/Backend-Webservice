@@ -46,6 +46,9 @@ export class SectionService {
           user_id: user,
         },
         relations: ['user_id'],
+        order: {
+          id: 'ASC',  // Ordena por ID en orden ascendente
+        },
       });
 
       if (!section) {

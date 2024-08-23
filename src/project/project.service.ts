@@ -47,6 +47,9 @@ export class ProjectService {
           user_id: user, // Aquí usamos el objeto `user` directamente
         },
         relations: ['user_id', 'prosImgs','skills'],
+        order: {
+          id: 'ASC',  // Ordena por ID en orden ascendente
+        },
       });
    
       return skills.map(skill => plainToClass(Project, skill));

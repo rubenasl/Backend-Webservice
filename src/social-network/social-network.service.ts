@@ -37,6 +37,9 @@ export class SocialNetworkService {
           },
         },
         relations: ['user_id'],
+        order: {
+          id: 'ASC',  // Ordena por ID en orden ascendente
+        },
       });
 
       if (!socials.length) {

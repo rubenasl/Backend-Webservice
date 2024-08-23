@@ -54,6 +54,9 @@ export class ResumeService {
           user_id: user, // Aquí usamos el objeto `user` directamente
         },
         relations: ['user_id'],
+        order: {
+          id: 'ASC',  // Ordena por ID en orden ascendente
+        },
       });
   
       return skills.map(skill => plainToClass(Resume, skill));
