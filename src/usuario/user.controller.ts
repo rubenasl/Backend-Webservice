@@ -89,7 +89,6 @@ export class UsuarioController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
   remove(@Param('id') id: string) {
     return this.userService.Delete(id);
   }
