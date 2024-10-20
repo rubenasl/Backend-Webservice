@@ -27,9 +27,9 @@ export class CreateUserDto {
 
     degree:string;
 
-    freelancer:boolean;
+    freelancer:string;
 
-    remote:boolean;
+    remote:string;
 
     profession:string;
 

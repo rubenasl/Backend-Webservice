@@ -31,9 +31,9 @@ export class Usuario {
     @Column({nullable:true})
     degree:string;
     @Column({nullable:true, default:false})
-    freelancer:boolean;
+    freelancer:string;
     @Column({nullable:true, default:false})
-    remote:boolean;
+    remote:string;
     @Column({nullable:true})
     profession:string;
     @Column({unique:true})
