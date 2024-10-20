@@ -39,11 +39,11 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
   degree?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @IsString()
   freelancer?: string;
 
   @IsOptional()
-  @IsBoolean()
+  @IsString()
   remote?: string;
 
   @IsOptional()

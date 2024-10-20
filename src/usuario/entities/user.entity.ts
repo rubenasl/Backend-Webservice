@@ -30,9 +30,9 @@ export class Usuario {
     address:string;
     @Column({nullable:true})
     degree:string;
-    @Column({nullable:true, default:false})
+    @Column({nullable:true})
     freelancer:string;
-    @Column({nullable:true, default:false})
+    @Column({nullable:true})
     remote:string;
     @Column({nullable:true})
     profession:string;
